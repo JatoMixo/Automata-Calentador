@@ -3,7 +3,7 @@ import requests as req
 import os
 import json
 
-downloadTime = [12, 6, 0]
+downloadTime = [22, 40, 0]
 filePath = "D:/Miguel/Programas/Automata-Calentador/Code/Downloads/cheapests.json"
 
 def GetTime():
@@ -47,6 +47,6 @@ while 2 > 1:
 
     if GetTime() == downloadTime:
         DownloadFile("https://api.preciodelaluz.org/v1/prices/cheapests?zone=PCB&n=3", filePath)
-
+        
         DeleteFile(filePath)
         
