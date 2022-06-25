@@ -5,14 +5,19 @@ import json
 
 downloadTime = [22, 40, 0]
 filePath = "D:/Miguel/Programas/Automata-Calentador/Code/Downloads/cheapests.json"
+cheapestsHoursCuantity = 3
+url = f"https://api.preciodelaluz.org/v1/prices/cheapests?zone=PCB&n={str(cheapestsHoursCuantity)}"
 
-def GetTime():
+
+def GetTime(onlyHour):
     _hour = str(datetime.now().strftime("%H"))
     _minute = str(datetime.now().strftime("%M"))
     _second = str(datetime.now().strftime("%S"))
 
-    
-    return [int(_hour), int(_minute), int(_second)]
+    if onlyHour:
+        return int(_hour)
+    else:
+        return [int(_hour), int(_minute), int(_second)]
 
 def DownloadFile(_URL, _filePath):
     if not(os.path.isfile(_filePath)):
@@ -34,19 +39,26 @@ def DeleteFile(_filePath):
         print("File doesn't exist")
 
 def ReadFile(_filePath):
-    hours = []
+    if os.path.isfile(_filePath):
+        with open(_filePath, "r") as _file:
+            decoded_data = json.load(_file)
+
+        return(decoded_data)
+    else:
+        print("File not found")
 
 
-DownloadFile("https://api.preciodelaluz.org/v1/prices/cheapests?zone=PCB&n=3", filePath)
+DownloadFile(url, filePath)
 
-print(ReadFile(filePath))
+data = ReadFile(filePath)
+print(data)
 
 DeleteFile(filePath)
 
 while 2 > 1:
 
-    if GetTime() == downloadTime:
-        DownloadFile("https://api.preciodelaluz.org/v1/prices/cheapests?zone=PCB&n=3", filePath)
+    if GetTime(False) == downloadTime:
+        DownloadFile(url, filePath)
         
         DeleteFile(filePath)
         
