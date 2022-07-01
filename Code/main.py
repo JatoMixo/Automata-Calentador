@@ -45,10 +45,32 @@ def ReadFile(_filePath):
     else:
         print("File not found")
 
+def GetHours (_filePath):
+    if (os.path.isfile(_filePath)):
+        hours = []
+        
+        i = 0
+        while (i < cheapestsHoursCuantity):
+            hour = ReadFile(_filePath)[i]["hour"]    
+            hour = hour[0] + hour[1]
+
+            hours.append(hour)
+
+            i += 1
+        
+        hours.sort()
+        return hours
+    else:
+        DownloadFile(url, filePath)
+
+def TurnOnRelay():
+    print()
+
 DownloadFile(url, filePath)
-file = ReadFile(filePath)
+print(GetHours(filePath))
+'''file = ReadFile(filePath)
 print(file[0]["hour"])
-DeleteFile(filePath)
+DeleteFile(filePath)'''
 
 '''while 2 > 1:
 
