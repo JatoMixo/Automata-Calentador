@@ -3,18 +3,19 @@ import requests as req
 import os
 import json
 
-downloadTime = [0, 5, 0]
+downloadTime = [14, 39, 20]
 filePath = "D:/Miguel/Programas/Automata-Calentador/Code/Downloads/cheapests.json"
 cheapestsHoursCuantity = 3
 url = f"https://api.preciodelaluz.org/v1/prices/cheapests?zone=PCB&n={str(cheapestsHoursCuantity)}"
+cheapHours = []
 
 
-def GetTime(onlyHour):
+def GetTime(_onlyHour):
     _hour = str(datetime.now().strftime("%H"))
     _minute = str(datetime.now().strftime("%M"))
     _second = str(datetime.now().strftime("%S"))
 
-    if onlyHour:
+    if _onlyHour:
         return int(_hour)
     else:
         return [int(_hour), int(_minute), int(_second)]
@@ -54,7 +55,7 @@ def GetHours (_filePath):
             hour = ReadFile(_filePath)[i]["hour"]    
             hour = hour[0] + hour[1]
 
-            hours.append(hour)
+            hours.append(int(hour))
 
             i += 1
         
@@ -64,18 +65,21 @@ def GetHours (_filePath):
         DownloadFile(url, filePath)
 
 def TurnOnRelay():
-    print()
+    print("Turned on relay")
+def TurnOffRelay():
+    print("Turned off relay")
 
-DownloadFile(url, filePath)
-print(GetHours(filePath))
-'''file = ReadFile(filePath)
-print(file[0]["hour"])
-DeleteFile(filePath)'''
-
-'''while 2 > 1:
-
-    if GetTime(False) == downloadTime:
+while True:
+    if (GetTime(False) == downloadTime):
         DownloadFile(url, filePath)
-        
-        DeleteFile(filePath)'''
+        cheapHours = GetHours(filePath)
+        DeleteFile(filePath)
+
+    i = 0
+    while i < len(cheapHours):
+        if GetTime(True) == cheapHours[i]:
+            TurnOnRelay()
+            i = len(cheapHours) + 1
+        else:
+            TurnOffRelay
         
