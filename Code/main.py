@@ -2,12 +2,14 @@ from datetime import datetime
 import requests as req
 import os
 import json
+import gpiozero as gpio
 
-downloadTime = [14, 39, 20]
+downloadTime = [0, 1, 0]
 filePath = "D:/Miguel/Programas/Automata-Calentador/Code/Downloads/cheapests.json"
 cheapestsHoursCuantity = 3
 url = f"https://api.preciodelaluz.org/v1/prices/cheapests?zone=PCB&n={str(cheapestsHoursCuantity)}"
 cheapHours = []
+relay = gpio.OutputDevice(17, active_high=False, initial_value=False)
 
 
 def GetTime(_onlyHour):
@@ -64,10 +66,11 @@ def GetHours (_filePath):
     else:
         DownloadFile(url, filePath)
 
-def TurnOnRelay():
-    print("Turned on relay")
-def TurnOffRelay():
-    print("Turned off relay")
+def TurnOnRelay(_relay):
+    _relay.on()
+
+def TurnOffRelay(_relay):
+    _relay.off()
 
 while True:
     if (GetTime(False) == downloadTime):
@@ -75,11 +78,14 @@ while True:
         cheapHours = GetHours(filePath)
         DeleteFile(filePath)
 
-    i = 0
-    while i < len(cheapHours):
-        if GetTime(True) == cheapHours[i]:
-            TurnOnRelay()
-            i = len(cheapHours) + 1
-        else:
-            TurnOffRelay
+    if cheapHours != []:
+        i = 0
+        while i < len(cheapHours):
+            if GetTime(True) == cheapHours[i]:
+                TurnOnRelay(relay)
+                i = len(cheapHours) + 1
+            else:
+                TurnOffRelay(relay)
+            i += 1
+    
         
