@@ -5,7 +5,7 @@ import json
 import gpiozero as gpio
 
 downloadTime = [0, 1, 0]
-filePath = "D:/Miguel/Programas/Automata-Calentador/Code/Downloads/cheapests.json"
+filePath = "/home/automatacalentador/Automata/Code/Downloads/cheapests.json"
 cheapestsHoursCuantity = 3
 url = f"https://api.preciodelaluz.org/v1/prices/cheapests?zone=PCB&n={str(cheapestsHoursCuantity)}"
 cheapHours = []
@@ -72,7 +72,34 @@ def TurnOnRelay(_relay):
 def TurnOffRelay(_relay):
     _relay.off()
 
-while True:
+print("--Actual Time--")
+print("Hour: " + GetHours(True))
+print("Time: " + GetHours(False))
+
+input("Continue?")
+
+print("--Download | Read--")
+DownloadFile(url, filePath)
+cheapHours = GetHours(filePath)
+print(cheapHours)
+DeleteFile(filePath)
+
+input("Continue?")
+
+print("--Turn on/off relay--")
+while i < len(cheapHours):
+    if GetTime(True) == cheapHours[i]:
+        TurnOnRelay(relay)
+        i = len(cheapHours) + 1
+    else:
+         TurnOffRelay(relay)
+    i += 1
+
+print("Turn on relay?")
+TurnOnRelay(relay)
+print("Turn off relay?")
+TurnOffRelay(relay)
+'''while True:
     if (GetTime(False) == downloadTime):
         DownloadFile(url, filePath)
         cheapHours = GetHours(filePath)
@@ -86,6 +113,6 @@ while True:
                 i = len(cheapHours) + 1
             else:
                 TurnOffRelay(relay)
-            i += 1
+            i += 1'''
     
         
