@@ -9,7 +9,7 @@ filePath = "/home/automatacalentador/Automata/Code/Downloads/cheapests.json"
 cheapestsHoursCuantity = 3
 url = f"https://api.preciodelaluz.org/v1/prices/cheapests?zone=PCB&n={str(cheapestsHoursCuantity)}"
 cheapHours = []
-relay = gpio.OutputDevice(17, active_high=False, initial_value=False)
+relay = gpio.OutputDevice(17, active_high=False, initial_value=True)
 
 
 def GetTime(_onlyHour):
@@ -67,39 +67,12 @@ def GetHours (_filePath):
         DownloadFile(url, filePath)
 
 def TurnOnRelay(_relay):
-    _relay.on()
-
-def TurnOffRelay(_relay):
     _relay.off()
 
-print("--Actual Time--")
-print("Hour: " + GetHours(True))
-print("Time: " + GetHours(False))
+def TurnOffRelay(_relay):
+    _relay.on()
 
-input("Continue?")
-
-print("--Download | Read--")
-DownloadFile(url, filePath)
-cheapHours = GetHours(filePath)
-print(cheapHours)
-DeleteFile(filePath)
-
-input("Continue?")
-
-print("--Turn on/off relay--")
-while i < len(cheapHours):
-    if GetTime(True) == cheapHours[i]:
-        TurnOnRelay(relay)
-        i = len(cheapHours) + 1
-    else:
-         TurnOffRelay(relay)
-    i += 1
-
-print("Turn on relay?")
-TurnOnRelay(relay)
-print("Turn off relay?")
-TurnOffRelay(relay)
-'''while True:
+while True:
     if (GetTime(False) == downloadTime):
         DownloadFile(url, filePath)
         cheapHours = GetHours(filePath)
@@ -113,6 +86,6 @@ TurnOffRelay(relay)
                 i = len(cheapHours) + 1
             else:
                 TurnOffRelay(relay)
-            i += 1'''
+            i += 1
     
         
