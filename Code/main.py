@@ -72,6 +72,7 @@ def TurnOnRelay(_relay):
 def TurnOffRelay(_relay):
     _relay.on()
 
+
 while True:
     if (GetTime(False) == downloadTime):
         DownloadFile(url, filePath)
