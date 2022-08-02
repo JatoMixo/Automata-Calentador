@@ -72,7 +72,9 @@ def TurnOnRelay(_relay):
 def TurnOffRelay(_relay):
     _relay.on()
 
-
+DownloadFile(url, filePath)
+cheapHours = GetHours(filePath)
+DeleteFile(filePath)
 while True:
     if (GetTime(False) == downloadTime):
         DownloadFile(url, filePath)
