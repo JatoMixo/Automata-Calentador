@@ -1,3 +1,9 @@
+# Made and coded by JatoMixo. 
+#
+# Twitter: @JatoMixo_Gamer
+# Web: jatomixo.com
+
+
 from datetime import datetime
 import requests as req
 import os
