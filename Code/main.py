@@ -96,5 +96,6 @@ while True:
             else:
                 TurnOffRelay(relay)
             i += 1
-    
-        
+
+
+
